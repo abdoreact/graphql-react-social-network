@@ -1,0 +1,15 @@
+const express=require("express")
+const {ApolloServer} = require("apollo-server-express")
+const typeDefs=require("./typeDefs")
+const resolvers=require("./resolvers")
+const app=express()
+const mongoose=require("mongoose")
+const mongouri=require("./config.json").mongodburi
+const server=new ApolloServer({typeDefs, resolvers})
+server.applyMiddleware({app})
+mongoose.set('useCreateIndex', true)
+mongoose.connect(mongouri, {useNewUrlParser:true, useUnifiedTopology:true})
+.then(() => {
+  app.listen(8080, () => console.log(8080))
+})
+.catch(() => console.log("err"))
